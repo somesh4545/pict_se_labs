@@ -98,39 +98,30 @@ public:
 
     node *deleteNode(node *root, int val)
     {
-        if (root->data == val)
-        {
-            if (root->left == NULL && root->right == NULL)
-            {
+        if(root == NULL) {
+            cout << "\nNot found";
+            return root;
+        }
+        if(root->data == val){
+            if(root->left == NULL && root->right == NULL){
                 return NULL;
-            }
-            else if (root->left == NULL && root->right != NULL)
-            {
-                node *temp = root->right;
-                delete root;
-                return temp;
-            }
-            else if (root->left != NULL && root->right == NULL)
-            {
-                node *temp = root->left;
-                delete root;
-                return temp;
-            }
-            else
-            {
-                node *temp = findSuccessor(root);
+            }else if(root->left!=NULL && root->right==NULL){
+                return root->left;
+            }else if(root->left==NULL && root->right!=NULL){
+                return root->right;
+            }else{
+                node* temp = findSuccessor(root);
                 root->data = temp->data;
+                // delete(temp);
                 root->right = deleteNode(root->right, temp->data);
+                // return root;
             }
-        }
-        else if (root->data > val)
-        {
+        }else if(root->data > val){
             root->left = deleteNode(root->left, val);
-        }
-        else if (root->data < val)
-        {
+        }else if(root->data < val){
             root->right = deleteNode(root->right, val);
         }
+
         return root;
     }
 
@@ -223,7 +214,7 @@ int main()
         }
         default:
         {
-            cout << "Invalid choice";
+            cout << "Invalid choice\n";
             break;
         }
         }
