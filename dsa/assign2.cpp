@@ -22,7 +22,7 @@ string infixToPostFix(string str)
 {
     string ans;
 
-    Stack st;
+    Stack<char> st;
 
     for (int i = 0; i < str.length(); i++)
     {
@@ -89,7 +89,7 @@ int evalPost(string str)
 {
     int ans = 0;
 
-    Stack st;
+    Stack<char> st;
 
     for (int i = 0; i < str.length(); i++)
     {
@@ -125,7 +125,7 @@ int evalPost(string str)
             }
             case ('^'):
             {
-                st.push(pow(val2, val1));cl
+                st.push(pow(val2, val1));
                 break;
             }
             }
@@ -157,8 +157,8 @@ int main()
         {
 
             string str;
-            cout << "Enter string: ";
-            cin >> str;
+            cout << "Ente r string: ";
+            cin >> str;  
             string op = infixToPostFix(str);
             cout << "Infix to postfix: " << op;
             break;

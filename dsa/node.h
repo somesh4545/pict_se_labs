@@ -1,12 +1,14 @@
 #include <iostream>
 
+template <class t> 
 class node
 {
 public:
-    char data;
+
+    t data;
     node *next;
 
-    node(int n)
+    node(t n)
     {
         data = n;
         next = NULL;

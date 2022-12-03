@@ -2,16 +2,17 @@
 #include "node.h"
 using namespace std;
 
+template <class t>
 class Stack
 {
-    node *top;
+    node<t> *top;
 
     public:
     Stack() { top = NULL; }
 
-    void push(int n)
+    void push(t n)
     {
-        node *temp = new node(n);
+        node<t> *temp = new node<t>(n);
         temp->next = top;
         top = temp;
     }
@@ -29,7 +30,7 @@ class Stack
             top = top->next;
     }
 
-    char stackTop()
+    t stackTop()
     {
         if (top != NULL)
             return top->data;
@@ -39,7 +40,7 @@ class Stack
 
     void display()
     {
-        node *temp = top;
+        node<t> *temp = top;
 
         if (top == NULL)
         {
