@@ -1,74 +1,10 @@
 #include <iostream>
+#include "Stack.h"
+#include <cmath>
 using namespace std;
 
 #define MAX_LEN 60
 
-class node
-{
-public:
-    char data;
-    node *next;
-
-    node(int n)
-    {
-        data = n;
-        next = NULL;
-    }
-};
-
-class Stack
-{
-    node *top;
-
-public:
-    Stack() { top = NULL; }
-
-    void push(int n)
-    {
-        node *temp = new node(n);
-        temp->next = top;
-        top = temp;
-    }
-
-    bool isEmpty()
-    {
-        return top == NULL;
-    }
-
-    void pop()
-    {
-        if (top == NULL)
-            return;
-        else
-            top = top->next;
-    }
-
-    char stackTop()
-    {
-        if (top != NULL)
-            return top->data;
-        else
-            exit(1);
-    }
-
-    void display()
-    {
-        node *temp = top;
-
-        if (top == NULL)
-        {
-            cout << "Stack is empty";
-        }
-        else
-        {
-            while (temp != NULL)
-            {
-                cout << temp->data;
-                temp = temp->next;
-            }
-        }
-    }
-};
 
 int prec(char c)
 {
@@ -185,6 +121,11 @@ int evalPost(string str)
             case ('/'):
             {
                 st.push(val2 / val1);
+                break;
+            }
+            case ('^'):
+            {
+                st.push(pow(val2, val1));cl
                 break;
             }
             }
