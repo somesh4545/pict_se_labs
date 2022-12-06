@@ -27,7 +27,7 @@ string infixToPostFix(string str)
     for (int i = 0; i < str.length(); i++)
     {
         char c = str[i];
-
+        if(c == ' ') continue;
         if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
             ans += c;
         else if (c == '(')
@@ -56,7 +56,6 @@ string infixToPostFix(string str)
     {
         ans += st.stackTop();
         st.pop();
-        /* code */
     }
 
     return ans;
@@ -89,17 +88,18 @@ int evalPost(string str)
 {
     int ans = 0;
 
-    Stack<char> st;
+    Stack<int> st;
 
     for (int i = 0; i < str.length(); i++)
     {
+        if(str[i] == ' ') continue;
         if (isdigit(str[i]))
-            st.push(str[i] - '0');
+            st.push((int)(str[i] - '0' ));
         else
-        {
-            int val1 = (int)st.stackTop();
+        {   
+            int val1 = st.stackTop();
             st.pop();
-            int val2 = (int)st.stackTop();
+            int val2 = st.stackTop();
             st.pop();
             switch (str[i])
             {
@@ -157,8 +157,9 @@ int main()
         {
 
             string str;
-            cout << "Ente r string: ";
-            cin >> str;  
+            cout << "Enter string: ";
+            getline(cin, str);
+            getline(cin, str);
             string op = infixToPostFix(str);
             cout << "Infix to postfix: " << op;
             break;
@@ -167,7 +168,8 @@ int main()
         {
             string str;
             cout << "Enter string: ";
-            cin >> str;
+            getline(cin, str);
+            getline(cin, str);
             string op = infixToPrefix(str);
             cout << "Infix to prefix: " << op;
             break;
@@ -176,7 +178,8 @@ int main()
         {
             string str;
             cout << "Enter string: ";
-            cin >> str;
+            getline(cin, str);
+            getline(cin, str);
             int op = evalPost(str);
             cout << "The evaluation of postfix equation is = " << op;
             break;
@@ -185,7 +188,8 @@ int main()
         {
             string str;
             cout << "Enter string: ";
-            cin >> str;
+            getline(cin, str);
+            getline(cin, str);
             int op = evalPre(str);
             cout << "The evaluation of prefix equation is = " << op;
             break;
