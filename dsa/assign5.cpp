@@ -155,6 +155,15 @@ public:
         int r = 1 + height(root->right);
         return max(l, r);
     }
+
+    void leafNodes(node *root) {
+        if(root == NULL) return;
+        if(root->right == NULL && root->left == NULL){
+            cout << root->data << " ";
+        }
+        leafNodes(root->left);
+        leafNodes(root->right);
+    }
 };
 
 int main()
@@ -165,7 +174,7 @@ int main()
 
     do
     {
-        cout << "\nEnter your choice 1.Insert 2.Search 3.Display 4.Delete 5.Height 6.Exit: ";
+        cout << "\nEnter your choice 1.Insert 2.Search 3.Display 4.Delete 5.Height 6.Leaf Nodes 7.Exit: ";
         cin >> ch;
 
         switch (ch)
@@ -209,6 +218,13 @@ int main()
         }
         case 6:
         {
+            cout << "Leaf nodes are: ";
+            tree->leafNodes(tree->root);
+            cout << endl;
+            break;
+        }
+        case 7:
+        {
             cout << "\nProgram ends";
             break;
         }
@@ -218,7 +234,7 @@ int main()
             break;
         }
         }
-    } while (ch != 6);
+    } while (ch != 7);
 
     return 0;
 }
