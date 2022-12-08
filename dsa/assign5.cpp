@@ -1,4 +1,6 @@
 #include <iostream>
+#include <map>
+#include <vector>
 using namespace std;
 
 class node
@@ -164,6 +166,16 @@ public:
         leafNodes(root->left);
         leafNodes(root->right);
     }
+
+    void levelWise(node *root, int level, map<int, vector<int>>& mp){
+        if(root == NULL) return;
+
+        mp[level].push_back(root->data);
+        // cout << level << " " << root->data << endl;
+        // cout << root->data << " ";
+        levelWise(root->left, level+1, mp);
+        levelWise(root->right, level+1, mp);
+    }
 };
 
 int main()
@@ -171,10 +183,22 @@ int main()
     bst *tree = new bst();
 
     int ch = 0;
+    
+    // tree->root = tree->insert(tree->root, new node(10));
+    // tree->insert(tree->root, new node(9));
+    // tree->insert(tree->root, new node(12));
+    // tree->insert(tree->root, new node(5));
+    // tree->insert(tree->root, new node(4));
+    // tree->insert(tree->root, new node(8));
+    // tree->insert(tree->root, new node(11));
+    // tree->insert(tree->root, new node(13));
+    // tree->insert(tree->root, new node(15));
+
+    
 
     do
     {
-        cout << "\nEnter your choice 1.Insert 2.Search 3.Display 4.Delete 5.Height 6.Leaf Nodes 7.Exit: ";
+        cout << "\nEnter your choice 1.Insert 2.Search 3.Display 4.Delete 5.Height 6.Leaf Nodes 7.Level wise 8.Exit: ";
         cin >> ch;
 
         switch (ch)
@@ -225,6 +249,21 @@ int main()
         }
         case 7:
         {
+            map<int, vector<int>> mp;
+
+            tree->levelWise(tree->root, 1, mp);
+            
+            for(auto ele:mp){
+                cout << "Level " << ele.first << ": ";
+                for(auto x:ele.second){
+                    cout << x << " ";
+                }
+                cout << endl;
+            }
+            break;
+        }
+        case 8:
+        {
             cout << "\nProgram ends";
             break;
         }
@@ -234,7 +273,7 @@ int main()
             break;
         }
         }
-    } while (ch != 7);
+    } while (ch != 8);
 
     return 0;
 }
