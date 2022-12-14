@@ -184,17 +184,6 @@ int main()
 
     int ch = 0;
     
-    // tree->root = tree->insert(tree->root, new node(10));
-    // tree->insert(tree->root, new node(9));
-    // tree->insert(tree->root, new node(12));
-    // tree->insert(tree->root, new node(5));
-    // tree->insert(tree->root, new node(4));
-    // tree->insert(tree->root, new node(8));
-    // tree->insert(tree->root, new node(11));
-    // tree->insert(tree->root, new node(13));
-    // tree->insert(tree->root, new node(15));
-
-    
 
     do
     {
