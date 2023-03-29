@@ -1,3 +1,5 @@
+========================================================= Converting ER model to database ================================================================
+
 mysql> use db_89;
 Database changed
 mysql> create table customers(id integer auto_increment, fname varchar(20) not null, lname varchar(20) not null, address varchar(50), phone_no varchar(10), primary key(id));
@@ -75,3 +77,57 @@ mysql> describe selling;
 +-----------+------+------+-----+---------+----------------+
 3 rows in set (0.01 sec)
 
+
+
+
+
+======================================================================== Alter table ==============================================================================
+mysql> describe sellers;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| id             | int         | NO   | PRI | NULL    | auto_increment |
+| email          | varchar(20) | NO   |     | NULL    |                |
+| customer_email | varchar(20) | YES  |     | NULL    |                |
+| brand_name     | varchar(30) | NO   |     | NULL    |                |
+| gst_no         | varchar(15) | NO   |     | NULL    |                |
+| phone_no       | varchar(10) | NO   |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> alter table sellers drop column customer_email;
+Query OK, 0 rows affected (0.70 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe sellers;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int         | NO   | PRI | NULL    | auto_increment |
+| email      | varchar(20) | NO   |     | NULL    |                |
+| brand_name | varchar(30) | NO   |     | NULL    |                |
+| gst_no     | varchar(15) | NO   |     | NULL    |                |
+| phone_no   | varchar(10) | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+
+mysql> alter table sellers modify column email varchar(50);
+Query OK, 0 rows affected (1.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table sellers modify column brand_name varchar(50);
+Query OK, 0 rows affected (1.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe sellers;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int         | NO   | PRI | NULL    | auto_increment |
+| email      | varchar(50) | YES  |     | NULL    |                |
+| brand_name | varchar(50) | YES  |     | NULL    |                |
+| gst_no     | varchar(15) | NO   |     | NULL    |                |
+| phone_no   | varchar(10) | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
