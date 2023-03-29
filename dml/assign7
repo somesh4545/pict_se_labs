@@ -59,3 +59,38 @@ mysql> select * from selling;
 |  6 |    6 |         2 |
 +----+------+-----------+
 6 rows in set (0.00 sec)
+
+
+1) Display all the Purchase orders of a specific Customer
+mysql> select products.name, products.discounted_price, fname, lname, date, phone_no, date 
+    -> from customers
+    -> inner join orders on orders.c_id=customers.id
+    -> inner join products on orders.p_id=products.id
+    -> where customers.id=1;
++------------------+------------------+--------+--------+---------------------+------------+---------------------+
+| name             | discounted_price | fname  | lname  | date                | phone_no   | date                |
++------------------+------------------+--------+--------+---------------------+------------+---------------------+
+| red sports wear  |              499 | somesh | somani | 2023-03-29 12:23:07 | 8080259833 | 2023-03-29 12:23:07 |
+| black cap        |              199 | somesh | somani | 2023-03-29 12:23:07 | 8080259833 | 2023-03-29 12:23:07 |
+| blue-white shirt |              499 | somesh | somani | 2023-03-29 12:23:07 | 8080259833 | 2023-03-29 12:23:07 |
+| black cap        |              199 | somesh | somani | 2023-03-29 12:23:23 | 8080259833 | 2023-03-29 12:23:23 |
+| black tshirt     |              499 | somesh | somani | 2023-03-29 12:23:23 | 8080259833 | 2023-03-29 12:23:23 |
++------------------+------------------+--------+--------+---------------------+------------+---------------------+
+5 rows in set (0.01 sec)
+
+
+2) Get Customer and Data Item Information for a Specific Purchase Order
+mysql> select orders.id as order_id, fname, lname, phone_no, products.name, products.discounted_price
+    -> from orders
+    -> inner join products on orders.p_id=products.id
+    -> inner join customers on orders.c_id=customers.id
+    -> where orders.id=5;
++----------+--------+--------+------------+-----------+------------------+
+| order_id | fname  | lname  | phone_no   | name      | discounted_price |
++----------+--------+--------+------------+-----------+------------------+
+|        5 | somesh | somani | 8080259833 | black cap |              199 |
++----------+--------+--------+------------+-----------+------------------+
+1 row in set (0.00 sec)
+
+3) Get the Total Value of Purchase Orders
+
