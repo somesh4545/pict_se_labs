@@ -77,7 +77,18 @@ mysql> describe selling;
 +-----------+------+------+-----+---------+----------------+
 3 rows in set (0.01 sec)
 
+// Adding check constriant 
+mysql> create table temp(id int not null auto_increment, age int not null, primary key(id), check(age>=18), check(age<100));
+Query OK, 0 rows affected (0.62 sec)
 
+mysql> describe temp;
++-------+------+------+-----+---------+----------------+
+| Field | Type | Null | Key | Default | Extra          |
++-------+------+------+-----+---------+----------------+
+| id    | int  | NO   | PRI | NULL    | auto_increment |
+| age   | int  | NO   |     | NULL    |                |
++-------+------+------+-----+---------+----------------+
+2 rows in set (0.01 sec)
 
 
 
@@ -161,3 +172,46 @@ mysql> describe sellers;
 | phone_no   | varchar(10) | NO   |     | NULL    |                |
 +------------+-------------+------+-----+---------+----------------+
 5 rows in set (0.01 sec)
+
+mysql> alter table temp drop column age;
+Query OK, 0 rows affected (0.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe temp;
++-------+--------+------+-----+---------+-------+
+| Field | Type   | Null | Key | Default | Extra |
++-------+--------+------+-----+---------+-------+
+| ID    | double | NO   | PRI | NULL    |       |
++-------+--------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+
+======================================================================== Drop table ==============================================================================
+mysql> show tables;
++-----------------+
+| Tables_in_db_89 |
++-----------------+
+| customers       |
+| orders          |
+| products        |
+| sellers         |
+| selling         |
+| temp            |
++-----------------+
+6 rows in set (0.01 sec)
+
+mysql> drop table temp;
+Query OK, 0 rows affected (0.35 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_db_89 |
++-----------------+
+| customers       |
+| orders          |
+| products        |
+| sellers         |
+| selling         |
++-----------------+
+5 rows in set (0.00 sec)
+
