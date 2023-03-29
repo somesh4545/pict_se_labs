@@ -1,0 +1,61 @@
+======================================================================== inserting into table ======================================================================
+
+mysql> insert into customers(fname, lname, address, phone_no) values("somesh", "somani", "pune", "8080259833"), ("priyanshu", "mahukhaye", "nagpur", "7787878112");
+Query OK, 2 rows affected (0.11 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into customers(fname, lname, address, phone_no) values("om", "nikam", "nasik", "8080809812"), ("shitanshu", "b", "bandara", "7787878112");
+Query OK, 2 rows affected (0.08 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++----+------------+-----------+---------+------------+
+| id | fname      | lname     | address | phone_no   |
++----+------------+-----------+---------+------------+
+|  1 | somesh     | somani    | pune    | 8080259833 |
+|  2 | priyanshu  | mahukhaye | nagpur  | 7787878112 |
+|  3 | om         | nikam     | nasik   | 8080809812 |
+|  4 | shitanshu  | b         | bandara | 7787878112 |
+|  5 | madhav     | jadhav    | pune    | 8090809812 |
+|  6 | sudharshan | patil     | sangli  | 7787412367 |
++----+------------+-----------+---------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from sellers;
++----+---------------------------+-------------------+--------+------------+
+| id | email                     | brand_name        | gst_no | phone_no   |
++----+---------------------------+-------------------+--------+------------+
+|  1 | theindiangarage@gmail.com | the indian garage | 4545   | 8080234588 |
+|  2 | nike_india@gmail.com      | nike              | 4546   | 8080232588 |
++----+---------------------------+-------------------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from products;
++----+------------------+--------------------------------------------------------------------+-----+-------+------------------+-------------------------------+
+| id | name             | description                                                        | qty | price | discounted_price | img_urls                      |
++----+------------------+--------------------------------------------------------------------+-----+-------+------------------+-------------------------------+
+|  1 | red-white shirt  | A shirt is a piece of clothing worn on the upper part of your body |  10 |   999 |              499 | https://picsum.photos/200/300 |
+|  2 | blue-white shirt | A shirt is a piece of clothing worn on the upper part of your body |  10 |   999 |              499 | https://picsum.photos/200/300 |
+|  3 | black shirt      | A shirt is a piece of clothing worn on the upper part of your body |  10 |   999 |              499 | https://picsum.photos/200/300 |
+|  4 | red sports wear  | durable sports wear                                                |  15 |   699 |              499 | https://picsum.photos/200/300 |
+|  5 | black cap        | Perfect cap for summer                                             |  10 |   299 |              199 | https://picsum.photos/200/300 |
+|  6 | black tshirt     | durable sports wear                                                |  15 |   699 |              499 | https://picsum.photos/200/300 |
++----+------------------+--------------------------------------------------------------------+-----+-------+------------------+-------------------------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into selling(p_id, seller_id) values(1, 1), (2, 1), (3, 1), (4, 2), (5, 2), (6, 2);
+Query OK, 6 rows affected (0.14 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from selling;
++----+------+-----------+
+| id | p_id | seller_id |
++----+------+-----------+
+|  1 |    1 |         1 |
+|  2 |    2 |         1 |
+|  3 |    3 |         1 |
+|  4 |    4 |         2 |
+|  5 |    5 |         2 |
+|  6 |    6 |         2 |
++----+------+-----------+
+6 rows in set (0.00 sec)
