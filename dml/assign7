@@ -93,4 +93,80 @@ mysql> select orders.id as order_id, fname, lname, phone_no, products.name, prod
 1 row in set (0.00 sec)
 
 3) Get the Total Value of Purchase Orders
+mysql> select concat(count(orders.id), " total orders, unique products ", count(distinct(products.id))) as "Purchase details", sum(products.discounted_price) "Total Purchase (RS)" from orders inner join products on orders.p_id=products.id;
++-----------------------------------+---------------------+
+| Purchase details                  | Total Purchase (RS) |
++-----------------------------------+---------------------+
+| 9 total orders, unique products 6 |                3591 |
++-----------------------------------+---------------------+
+1 row in set (0.01 sec)
+
+4) List the Purchase Orders in descending order as per total.
+mysql> select orders.id as "ORDER ID", products.name as "product name", products.discounted_price as "total" from orders inner join products on orders.p_id=products.id
+order by discounted_price desc;
++----------+------------------+-------+
+| ORDER ID | product name     | total |
++----------+------------------+-------+
+|        4 | red-white shirt  |   499 |
+|        3 | blue-white shirt |   499 |
+|        7 | black shirt      |   499 |
+|        1 | red sports wear  |   499 |
+|        6 | black tshirt     |   499 |
+|        9 | black tshirt     |   499 |
+|        2 | black cap        |   199 |
+|        5 | black cap        |   199 |
+|        8 | black cap        |   199 |
++----------+------------------+-------+
+9 rows in set (0.00 sec)
+
+5)Display the name of customers whose first name starts with “So”. (String matching :Like operator)
+mysql> select * from customers where fname like 'so%';
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  7 | soham  | s      | pune    | 987656531  |   20 |
++----+--------+--------+---------+------------+------+
+2 rows in set (0.00 sec)
+
+6)Display the name of customer whose order amount is greater than all the customers. (Relational Operator: <, >, <=, >=, = =,!=)
+mysql> select customers.fname as "Customer name", sum(products.discounted_price) as "Total order value" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id group by orders.c_id order by sum(products.discounted_price) desc limit 3;
++---------------+-------------------+
+| Customer name | Total order value |
++---------------+-------------------+
+| somesh        |              1895 |
+| shitanshu     |               998 |
+| om            |               499 |
++---------------+-------------------+
+3 rows in set (0.00 sec)
+
+7)Display order details of customer whose city name is “Pune” and purchase date is “12/04/2023” (Boolean Operators: and, or)
+mysql> select orders.id as "ORDER ID", customers.fname "Customer name", products.name as "Product name", products.discounted_price as "Price" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id where customers.address="pune" and cast(orders.date as date)='2023-04-12';
++----------+---------------+-----------------+-------+
+| ORDER ID | Customer name | Product name    | Price |
++----------+---------------+-----------------+-------+
+|       10 | somesh        | red-white shirt |   499 |
++----------+---------------+-----------------+-------+
+1 row in set (0.00 sec)
+
+8)Delete Purchase Order 10
+mysql> delete from orders where id=10;
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from orders;
++----+------+------+---------------------+
+| id | c_id | p_id | date                |
++----+------+------+---------------------+
+|  1 |    1 |    4 | 2023-03-29 12:23:07 |
+|  2 |    1 |    5 | 2023-03-29 12:23:07 |
+|  3 |    1 |    2 | 2023-03-29 12:23:07 |
+|  4 |    3 |    1 | 2023-03-29 12:23:23 |
+|  5 |    1 |    5 | 2023-03-29 12:23:23 |
+|  6 |    1 |    6 | 2023-03-29 12:23:23 |
+|  7 |    4 |    3 | 2023-03-29 12:23:47 |
+|  8 |    5 |    5 | 2023-03-29 12:23:47 |
+|  9 |    4 |    6 | 2023-03-29 12:23:47 |
++----+------+------+---------------------+
+9 rows in set (0.00 sec)
+
 
