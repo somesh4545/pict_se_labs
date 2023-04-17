@@ -170,3 +170,65 @@ mysql> select * from orders;
 9 rows in set (0.00 sec)
 
 
+
+7-B
+
+1) Get the total no of customers.
+mysql> select count(*) as "Total customers" from customers;
++-----------------+
+| Total customers |
++-----------------+
+|               7 |
++-----------------+
+1 row in set (0.01 sec)
+
+2) Display average purchase amount of all the customers.
+mysql> select avg(products.discounted_price) as "Avg purchase value" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id;
++--------------------+
+| Avg purchase value |
++--------------------+
+|                399 |
++--------------------+
+1 row in set (0.00 sec)
+
+3) Display total purchase amount of all the customers.
+mysql> select sum(products.discounted_price) as "Total purchase" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id;
++----------------+
+| Total purchase |
++----------------+
+|           3591 |
++----------------+
+1 row in set (0.00 sec)
+
+4) Find DAYNAME, MONTHNAME and YEAR of the purchase order made
+mysql> select day(date) as day, month(date) as month, year(date) as year from or
+ders where id=1;
++------+-------+------+
+| day  | month | year |
++------+-------+------+
+|   29 |     3 | 2023 |
++------+-------+------+
+1 row in set (0.00 sec)
+
+5) Get current date & time, current time, current date
+mysql> select date(now()) as date, time(now()) as time;
++------------+----------+
+| date       | time     |
++------------+----------+
+| 2023-04-17 | 14:53:03 |
++------------+----------+
+1 row in set (0.00 sec)
+
+6) Get 6 month future & past date using interval function based on current date and name the column accordingly.
+mysql> select now()-INTERVAL 6 MONTH as "Past",  now()+INTERVAL 6 MONTH as "Future";
++---------------------+---------------------+
+| Past                | Future              |
++---------------------+---------------------+
+| 2022-10-17 15:13:59 | 2023-10-17 15:13:59 |
++---------------------+---------------------+
+1 row in set (0.00 sec)
+
+7) Find purchase details of the customers group by product category.
+
+
+
