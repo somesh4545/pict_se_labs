@@ -228,7 +228,13 @@ mysql> select now()-INTERVAL 6 MONTH as "Past",  now()+INTERVAL 6 MONTH as "Futu
 +---------------------+---------------------+
 1 row in set (0.00 sec)
 
-7) Find purchase details of the customers group by product category.
 
+GRANT, REVOKE
+
+mysql> GRANT ALL on db_89.* to 'somesh'@'localhost';
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> REVOKE ALL on db_89.* from 'somesh'@'localhost';
+Query OK, 0 rows affected (0.08 sec)
 
 
