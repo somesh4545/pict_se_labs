@@ -1,0 +1,125 @@
+1) Get the total no of customers.
+mysql> select count(*) as "Total customers" from customers;
++-----------------+
+| Total customers |
++-----------------+
+|               7 |
++-----------------+
+1 row in set (0.01 sec)
+
+2) Display average purchase amount of all the customers.
+mysql> select avg(products.discounted_price) as "Avg purchase value" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id;
++--------------------+
+| Avg purchase value |
++--------------------+
+|                399 |
++--------------------+
+1 row in set (0.00 sec)
+
+3) Display total purchase amount of all the customers.
+mysql> select sum(products.discounted_price) as "Total purchase" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id;
++----------------+
+| Total purchase |
++----------------+
+|           3591 |
++----------------+
+1 row in set (0.00 sec)
+
+4) Find DAYNAME, MONTHNAME and YEAR of the purchase order made
+mysql> select day(date) as day, month(date) as month, year(date) as year from or
+ders where id=1;
++------+-------+------+
+| day  | month | year |
++------+-------+------+
+|   29 |     3 | 2023 |
++------+-------+------+
+1 row in set (0.00 sec)
+
+5) Get current date & time, current time, current date
+mysql> select date(now()) as date, time(now()) as time;
++------------+----------+
+| date       | time     |
++------------+----------+
+| 2023-04-17 | 14:53:03 |
++------------+----------+
+1 row in set (0.00 sec)
+
+6) Get 6 month future & past date using interval function based on current date and name the column accordingly.
+mysql> select now()-INTERVAL 6 MONTH as "Past",  now()+INTERVAL 6 MONTH as "Future";
++---------------------+---------------------+
+| Past                | Future              |
++---------------------+---------------------+
+| 2022-10-17 15:13:59 | 2023-10-17 15:13:59 |
++---------------------+---------------------+
+1 row in set (0.00 sec)
+
+7) Get order details of products, which are not from skin care and hair care.
+MariaDB [niranjan]> select categories.name, products.name, products.price, orders.date
+    -> from orders
+    -> inner join products on orders.product_id=products.id
+    -> inner join categories on products.category_id=categories.id
+    -> where categories.name not in ('Skin care', 'Hair care');
++-------------------+-------------------------------------------------------+-------+---------------------+
+| name              | name                                                  | price | date                |
++-------------------+-------------------------------------------------------+-------+---------------------+
+| Shampoo           | Loreal professionnel inforcer shampoo 300ml           |   695 | 2022-08-08 16:03:37 |
+| Shampoo           | Mamaearth Onion Hair Fall Shampoo 250ml               |   350 | 2022-08-08 16:03:48 |
+| Face cream        | Lakme cc cream beige 9g                               |    99 | 2022-12-02 12:19:18 |
+| Moisturizer       | Nivea body milk body lotion 400ml                     |   425 | 2022-12-14 12:46:15 |
+| Necklaces on rent | Necklace with earing & bindia 31 (on rent for 4 days) |    50 | 2022-12-14 23:52:02 |
+| Necklaces on rent | Necklace 12 on rent for 4 days                        |    50 | 2022-12-20 12:30:10 |
+| Moisturizer       | Nivea shea smooth body lotion 400ml                   |   425 | 2023-03-22 08:19:48 |
++-------------------+-------------------------------------------------------+-------+---------------------+
+7 rows in set (0.001 sec)
+
+8) Get the name and quantity of product, which have either 10 or 20, or 30 quantities.
+MariaDB [niranjan]> select name, price, quantity from products where quantity in (5, 10) limit 10;
++-----------------------------------------------+-------+----------+
+| name                                          | price | quantity |
++-----------------------------------------------+-------+----------+
+| Joy hydra refresh ultra light gel 200 ml      |   225 |        5 |
+| Joy honey & almond moisturizear  200 ml       |   185 |        5 |
+| Joy honey almond body lotion 300 ml           |   230 |       10 |
+| Joy pure alovera moisturizear  200 ml         |   185 |        5 |
+| Joy honey almond body lotion 750ml            |   499 |        5 |
+| Himalaya Cocoa butter body lotion 400 ml      |   280 |        5 |
+| Himalaya nourishing body lotion 400 ml        |   280 |        5 |
+| Joy pure Aloe body lotion 300 ml              |   230 |        5 |
+| Lotus nutrimo8st moisturizear  with spf25 50g |   455 |        5 |
+| Natures honey almond body lotion 400 ml       |   250 |        5 |
++-----------------------------------------------+-------+----------+
+10 rows in set (0.000 sec)
+
+9) Get the product details whose product price is more than “Himalaya nourishing skin cream 200 ml". 
+MariaDB [niranjan]> select name, price, quantity from products where price>(select price from products where name='Himalaya nourishing skin cream 200 ml') limit 5;
++------------------------------------------+-------+----------+
+| name                                     | price | quantity |
++------------------------------------------+-------+----------+
+| Joy hydra refresh ultra light gel 200 ml |   225 |        5 |
+| Joy honey almond body lotion 300 ml      |   230 |       10 |
+| Joy honey almond body lotion 750ml       |   499 |        5 |
+| Himalaya Cocoa butter body lotion 400 ml |   280 |        5 |
+| Himalaya nourishing body lotion 400 ml   |   280 |        5 |
++------------------------------------------+-------+----------+
+5 rows in set (0.001 sec)
+
+10) Find the purchase order whose purchase amount is greater than maximum purchase amount
+MariaDB [niranjan]> select * from orders where amount=(select max(amount) from orders);
++----+---------+------------+----------+--------+--------------+---------------------+---------------------+--------------+
+| id | cust_id | product_id | quantity | amount | payment_mode | transcation_details | date                | order_status |
++----+---------+------------+----------+--------+--------------+---------------------+---------------------+--------------+
+|  1 |      15 |        949 |        1 |    568 | COD          | NULL                | 2022-08-08 16:03:37 | Delivered    |
++----+---------+------------+----------+--------+--------------+---------------------+---------------------+--------------+
+1 row in set (0.001 sec)
+
+
+
+GRANT, REVOKE
+
+mysql> GRANT ALL on db_89.* to 'somesh'@'localhost';
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> REVOKE ALL on db_89.* from 'somesh'@'localhost';
+Query OK, 0 rows affected (0.08 sec)
+
+
