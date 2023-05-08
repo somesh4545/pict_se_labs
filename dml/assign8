@@ -1,0 +1,99 @@
+============================================================== Creating view =============================================================================
+1) Create view for the Purchase orders of a specific Customer
+mysql> create view ordersOfCustomer1 as select products.name, products.discounted_price, fname, lname, date, phone_no from customers inner join orders on orders.c_id=customers.id inner join products on orders.p_id=products.id where customers.id=1;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select * from ordersOfCustomer1;
++------------------+------------------+--------+--------+---------------------+------------+
+| name             | discounted_price | fname  | lname  | date                | phone_no   |
++------------------+------------------+--------+--------+---------------------+------------+
+| blue-white shirt |              499 | somesh | somani | 2023-03-29 12:23:07 | 8080259833 |
+| red sports wear  |              499 | somesh | somani | 2023-03-29 12:23:07 | 8080259833 |
+| black cap        |              199 | somesh | somani | 2023-03-29 12:23:23 | 8080259833 |
+| black cap        |              199 | somesh | somani | 2023-03-29 12:23:07 | 8080259833 |
+| black tshirt     |              499 | somesh | somani | 2023-03-29 12:23:23 | 8080259833 |
++------------------+------------------+--------+--------+---------------------+------------+
+5 rows in set (0.04 sec)
+
+
+2) Create view for purchase orders in descending order as per total.
+mysql> create view highestPurchaseOrder as select orders.id as "ORDER ID", products.name as "product name", products.discounted_price as "total" from orders inner join products on orders.p_id=products.id order by discounted_price desc;
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> select * from highestPurchaseOrder;
++----------+------------------+-------+
+| ORDER ID | product name     | total |
++----------+------------------+-------+
+|        4 | red-white shirt  |   499 |
+|        3 | blue-white shirt |   499 |
+|        7 | black shirt      |   499 |
+|        1 | red sports wear  |   499 |
+|        6 | black tshirt     |   499 |
+|        9 | black tshirt     |   499 |
+|        2 | black cap        |   199 |
+|        5 | black cap        |   199 |
+|        8 | black cap        |   199 |
++----------+------------------+-------+
+9 rows in set (0.01 sec)
+
+
+3) Create view for display the name of customer whose order amount is greater than all the customers
+mysql> create view namesOfHOrders as select customers.fname as "Customer name", sum(products.discounted_price) as "Total order value" from orders inner join customers on orders.c_id=customers.id inner join products on orders.p_id=products.id group by orders.c_id order by sum(products.discounted_price) desc limit 3;
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> select * from namesOfHOrders;
++---------------+-------------------+
+| Customer name | Total order value |
++---------------+-------------------+
+| somesh        |              1895 |
+| shitanshu     |               998 |
+| om            |               499 |
++---------------+-------------------+
+3 rows in set (0.01 sec)
+
+
+4) Create view for orders where price is greater than 400
+mysql> create view highOrders as select orders.id as "ORDER ID", products.name as "product name", products.discounted_price as "total" from orders inner join products o
+n orders.p_id=products.id where products.discounted_price>400 order by discounted_price desc;
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> select * from highOrders;
++----------+------------------+-------+
+| ORDER ID | product name     | total |
++----------+------------------+-------+
+|        4 | red-white shirt  |   499 |
+|        3 | blue-white shirt |   499 |
+|        7 | black shirt      |   499 |
+|        1 | red sports wear  |   499 |
+|        6 | black tshirt     |   499 |
+|        9 | black tshirt     |   499 |
++----------+------------------+-------+
+6 rows in set (0.00 sec)
+
+
+5) Create view for showing customer details for the orders;
+mysql> create view customerOrders as select orders.id as order_id, fname, lname, phone_no, products.name, products.discounted_price from orders inner join products on o
+rders.p_id=products.id inne
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> select * from customerOrders;
++----------+-----------+--------+------------+------------------+------------------+
+| order_id | fname     | lname  | phone_no   | name             | discounted_price |
++----------+-----------+--------+------------+------------------+------------------+
+|        4 | om        | nikam  | 8080809812 | red-white shirt  |              499 |
+|        3 | somesh    | somani | 8080259833 | blue-white shirt |              499 |
+|        7 | shitanshu | b      | 7787878112 | black shirt      |              499 |
+|        1 | somesh    | somani | 8080259833 | red sports wear  |              499 |
+|        2 | somesh    | somani | 8080259833 | black cap        |              199 |
+|        5 | somesh    | somani | 8080259833 | black cap        |              199 |
+|        8 | madhav    | jadhav | 8090809812 | black cap        |              199 |
+|        6 | somesh    | somani | 8080259833 | black tshirt     |              499 |
+|        9 | shitanshu | b      | 7787878112 | black tshirt     |              499 |
++----------+-----------+--------+------------+------------------+------------------+
+9 rows in set (0.00 sec)
+
+
+
+
+
+
