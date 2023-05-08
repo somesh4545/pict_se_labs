@@ -94,6 +94,134 @@ mysql> select * from customerOrders;
 
 
 
+======================================================== insert into base table using view ===========================================================
+mysql> select * from customers where address='pune';
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  5 | madhav | jadhav | pune    | 8090809812 |   18 |
+|  7 | soham  | s      | pune    | 987656531  |   20 |
++----+--------+--------+---------+------------+------+
+3 rows in set (0.00 sec)
+
+mysql> create view puneCustomers as select * from customers where address='pune';
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> select * from puneCustomers;
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  5 | madhav | jadhav | pune    | 8090809812 |   18 |
+|  7 | soham  | s      | pune    | 987656531  |   20 |
++----+--------+--------+---------+------------+------+
+3 rows in set (0.00 sec)
+
+mysql> insert into puneCustomers(fname, lname, address, phone_no, dob) values('ayush', 'dhoot', 'pune', 8080981234, 19);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from customers where address='pune';
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  5 | madhav | jadhav | pune    | 8090809812 |   18 |
+|  7 | soham  | s      | pune    | 987656531  |   20 |
+|  9 | ayush  | dhoot  | pune    | 8080981234 |   19 |
++----+--------+--------+---------+------------+------+
+4 rows in set (0.00 sec)
+
+
+
+======================================================== update base table using view ===============================================================
+mysql> update puneCustomers set address='sangli' where id=9;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customers;
++----+------------+-----------+---------+------------+------+
+| id | fname      | lname     | address | phone_no   | dob  |
++----+------------+-----------+---------+------------+------+
+|  1 | somesh     | somani    | pune    | 8080259833 |   18 |
+|  2 | priyanshu  | mahukhaye | nagpur  | 7787878112 |   18 |
+|  3 | om         | nikam     | nasik   | 8080809812 |   18 |
+|  4 | shitanshu  | b         | bandara | 7787878112 |   18 |
+|  5 | madhav     | jadhav    | pune    | 8090809812 |   18 |
+|  6 | sudharshan | patil     | sangli  | 7787412367 |   18 |
+|  7 | soham      | s         | pune    | 987656531  |   20 |
+|  9 | ayush      | dhoot     | sangli  | 8080981234 |   19 |
++----+------------+-----------+---------+------------+------+
+8 rows in set (0.00 sec)
+
+
+======================================================== delete from base table using view ==========================================================
+mysql> delete from puneCustomers where id=7;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from customers;
++----+------------+-----------+---------+------------+------+
+| id | fname      | lname     | address | phone_no   | dob  |
++----+------------+-----------+---------+------------+------+
+|  1 | somesh     | somani    | pune    | 8080259833 |   18 |
+|  2 | priyanshu  | mahukhaye | nagpur  | 7787878112 |   18 |
+|  3 | om         | nikam     | nasik   | 8080809812 |   18 |
+|  4 | shitanshu  | b         | bandara | 7787878112 |   18 |
+|  5 | madhav     | jadhav    | pune    | 8090809812 |   18 |
+|  6 | sudharshan | patil     | sangli  | 7787412367 |   18 |
+|  9 | ayush      | dhoot     | sangli  | 8080981234 |   19 |
++----+------------+-----------+---------+------------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from puneCustomers;
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  5 | madhav | jadhav | pune    | 8090809812 |   18 |
++----+--------+--------+---------+------------+------+
+2 rows in set (0.00 sec)
+
+
+
+======================================================== alter and create or replace view ============================================================
+mysql> alter view highOrders as select orders.id as "ORDER ID", products.name as "product name", products.discounted_price as "total" from orders inner join products on orders.p_id=products.id where products.discounted_price>=199 order by discounted_price desc;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select * from highOrders;
++----------+------------------+-------+
+| ORDER ID | product name     | total |
++----------+------------------+-------+
+|        4 | red-white shirt  |   499 |
+|        3 | blue-white shirt |   499 |
+|        7 | black shirt      |   499 |
+|        1 | red sports wear  |   499 |
+|        6 | black tshirt     |   499 |
+|        9 | black tshirt     |   499 |
+|        2 | black cap        |   199 |
+|        5 | black cap        |   199 |
+|        8 | black cap        |   199 |
++----------+------------------+-------+
+9 rows in set (0.00 sec)
+
+
+mysql> create or replace view highOrders as select orders.id as "ORDER ID", products.name as "product name", products.discounted_price as "total" from orders inner join products on orders.p_id=products.id where products.discounted_price>=399 order by discounted_price desc;
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> select * from highOrders;
++----------+------------------+-------+
+| ORDER ID | product name     | total |
++----------+------------------+-------+
+|        4 | red-white shirt  |   499 |
+|        3 | blue-white shirt |   499 |
+|        7 | black shirt      |   499 |
+|        1 | red sports wear  |   499 |
+|        6 | black tshirt     |   499 |
+|        9 | black tshirt     |   499 |
++----------+------------------+-------+
+6 rows in set (0.00 sec)
+
+
 
 
 
