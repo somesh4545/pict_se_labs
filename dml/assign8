@@ -222,6 +222,23 @@ mysql> select * from highOrders;
 6 rows in set (0.00 sec)
 
 
+================================================================ Drop view ===========================================================
+mysql> select * from puneCustomers;
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  5 | madhav | jadhav | pune    | 8090809812 |   18 |
++----+--------+--------+---------+------------+------+
+2 rows in set (0.00 sec)
+
+mysql> drop view if exists puneCustomers;
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> select * from puneCustomers;
+ERROR 1146 (42S02): Table 'db_89.puneCustomers' doesn't exist
+
+
 
 
 
