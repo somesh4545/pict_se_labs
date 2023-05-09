@@ -267,6 +267,27 @@ mysql> select * from puneCustomers where fname like 'm%';
 1 row in set (0.00 sec)
 
 
+MariaDB [niranjan]> create view customerOrders as select fname, phone, amount, payment_mode from orders inner join customer on orders.cust_id=customer.id;
+Query OK, 0 rows affected (0.386 sec)
+
+MariaDB [niranjan]> select * from customerOrders;
++-----------+------------+--------+--------------+
+| fname     | phone      | amount | payment_mode |
++-----------+------------+--------+--------------+
+| Jay       | 7020811294 |    568 | COD          |
+| Jay       | 7020811294 |    275 | COD          |
+| Bhargavi  | 7219466484 |    425 | COD          |
+| Rasika    | 8459099749 |    150 | COD          |
+| Rasika    | 8459099749 |     90 | COD          |
+| Sanyam    | 9322118902 |    399 | COD          |
+| Pooja     | 9309764884 |     50 | COD          |
+| Tejswini  | 7385028268 |     50 | COD          |
+| Sanyam    | 9322118902 |    290 | COD          |
++-----------+------------+--------+--------------+
+9 rows in set (0.001 sec)
+
+MariaDB [niranjan]> insert into customerOrders(fname, phone, amount, payment_mode) values('jay', 911112345, 399, 'COD');
+ERROR 1393 (HY000): Can not modify more than one base table through a join view 'niranjan.customerorders'
 
 
 
