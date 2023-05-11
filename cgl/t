@@ -1,0 +1,196 @@
+#include <bits/stdc++.h>
+#include <GL/glut.h>
+#include <stdio.h>
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+#include<math.h>
+static int flag;
+int length, xi, yi, ch;
+double angle, ET[3][3], ETResult[3][3];
+double Rh[4][4], RhResult[4][4];
+
+int ox=300, oy=300;
+
+void mult3X3(double ET[3][3], double temp[3][3]){
+    double sum;
+    int i, j, k;
+    for(i=0; i<3; i++){
+        for(j=0; j<3; j++){
+            sum = 0;
+            for(k=0; k<3; k++){
+                sum += ET[i][k] * temp[k][j];
+            }
+            ETResult[i][j] = sum;
+        }
+    }
+}
+
+void drawSimpleLine(int x1, int y1, int x2, int y2){
+    float dx, dy, step, x, y, Xin, Yin;
+    dx = abs(x1-x2);
+    dy = abs(y1- y2);
+
+    if(dx > dy) step = dx;
+    else step = dy;
+
+    Xin = dx/step;
+    Yin = dy/step;
+
+    x = x1; y = y1;
+    glBegin(GL_POINTS);
+    glVertex2i(x, y);
+    glEnd();
+    
+    for(int i=0; i<step; i++){
+        x += Xin;
+        y += Yin;
+        glBegin(GL_POINTS);
+        glVertex2i(x, y);
+        glEnd();
+    }
+
+    glFlush();
+}
+
+void drawET(double ET[3][3])
+{
+    int i;
+    glBegin(GL_LINE_LOOP);
+    for(i=0;i<3;i++)
+    {
+        glVertex2i(ET[i][0],ET[i][1]);
+        cout << ET[i][0] << " " << ET[i][1] << "\n";
+    }
+    glEnd();
+    glFlush();
+}
+
+void drawRH(){
+
+}
+
+void displayFunc(){
+   glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    gluOrtho2D(0, 600, 600, 0);
+
+    glColor3f(1, 0, 1);
+    drawSimpleLine(300, 0, 300, 600);
+    drawSimpleLine(0, 300, 600, 300);
+
+    if(ch == 1){
+        drawET(ET);
+    }else{
+        drawRH();
+    }
+
+}
+
+void translationET(){
+    double tx, ty, temp[3][3];
+    cout << "Enter translation x factor: ";
+    cin >> tx;
+    cout << "Enter translation y factor: ";
+    cin >> ty;
+
+    temp[3][3] = {0};
+    temp[0][0] = 1;
+    temp[1][1] = 1;
+    temp[2][2] = 1;
+    temp[2][0] = tx;
+    temp[2][1] = ty;
+
+    mult3X3(ET, temp);
+    glColor3f(1, 0, 0);
+    drawET(ETResult);
+}
+
+void translationRH(){
+
+}
+
+void menu(int item){
+    switch (item)
+    {
+    case 1:
+        if(ch == 1) translationET();
+        else translationRH();
+        break;
+    
+    default:
+        break;
+    }
+}
+
+
+
+int main(int argc, char** argv){
+
+    cout << "MENU \n";
+    cout << "1. To draw equilateral triangle\n";
+    cout << "2. To draw rhombus\n";
+    cout << "3. To exit\n";
+    cout << "Enter choice: ";
+
+    cin >> ch;
+
+    switch (ch)
+    {
+        case 1:
+            flag = 0;
+            cout << "Enter x cordinate of a base point: ";
+            int xi;
+            cin >> xi;
+            cout << "Enter y cordinate of a base point: ";
+            int yi;
+            cin >> yi;
+            cout << "Enter length of sides: ";
+            int len;
+            cin >> len;
+
+            for(int i=0; i<3; i++){
+                for(int j=0; j<3; j++){
+                    ET[i][j] = 1;
+                }
+            }
+
+            xi += ox;
+            yi += oy;
+
+            ET[0][0] = xi;
+            ET[0][1] = yi;
+            ET[1][0] = xi+len;
+            ET[1][1] = yi;
+            ET[2][0] = len/2+xi;
+            ET[2][1] = (sqrt(3)/2*len) + yi;
+
+            break;
+        
+        default:
+            exit(0);
+            break;
+    }
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE);
+    glutInitWindowPosition(0, 0);
+    glutInitWindowSize(600, 600);
+    glutCreateWindow("2d transformation");
+
+    glutDisplayFunc(displayFunc);
+
+    glutCreateMenu(menu);
+glutAddMenuEntry("1.Translation",1);
+glutAddMenuEntry("2.Rotation",2);
+glutAddMenuEntry("3.Scaling",3);
+glutAddMenuEntry("4.Shear",4);
+glutAddMenuEntry("5.EXIT",5);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+    glutMainLoop();
+
+    return 0;
+}
