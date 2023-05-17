@@ -213,12 +213,96 @@ mysql> select @msg;
 Assignment 10
 
 1) Write a trigger for product qty for insert
+mysql> delimiter &&
+mysql> create trigger qtyChecker
+    -> before insert
+    -> on products
+    -> for each row
+    -> begin
+    -> if new.qty < 1 then
+    -> set new.qty = 1;
+    -> end if;
+    -> end &&
+Query OK, 0 rows affected (0.18 sec)
+mysql> delimiter ;
+mysql> insert into products(name, description, qty, price, discounted_price, img_urls) values('trial', 'xyz', -1, 100, 99, '');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from products where qty=9;
+Empty set (0.00 sec)
+
+mysql> select * from products where id=9;
++----+-------+-------------+-----+-------+------------------+----------+
+| id | name  | description | qty | price | discounted_price | img_urls |
++----+-------+-------------+-----+-------+------------------+----------+
+|  9 | trial | xyz         |   1 |   100 |               99 |          |
++----+-------+-------------+-----+-------+------------------+----------+
+1 row in set (0.00 sec)
 
 
-2) Trigger for updating discount
+2) Trigger for checking if discounted_price is greater than original price
+mysql> delimiter &&
+mysql> create trigger priceChecker
+    -> before insert
+    -> on products
+    -> for each row
+    -> begin
+    -> if new.discounted_price > new.price then
+    -> set new.discounted_price = new.price;
+    -> end if;
+    -> end &&
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> insert into products(name, description, qty, price, discounted_price, img_urls) values('trial', 'xyz', -1, 100, 199, '');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from products where id=10;
++----+-------+-------------+-----+-------+------------------+----------+
+| id | name  | description | qty | price | discounted_price | img_urls |
++----+-------+-------------+-----+-------+------------------+----------+
+| 10 | trial | xyz         |   1 |   100 |              100 |          |
++----+-------+-------------+-----+-------+------------------+----------+
+1 row in set (0.00 sec)
 
 
-3) Trigger for checking if product price is less than 0
+3) Trigger for checking if product price is less than 0 and displaying error msg
+mysql> delimiter && 
+mysql> create trigger rightPrice
+    -> before insert
+    -> on products
+    -> for each row
+    -> begin 
+    -> if (new.discounted_price < 1 or new.price < 1) then
+    -> signal sqlstate '45000' set message_text = 'Price of product cannot be less than 1rs';
+    -> end if;
+    -> end &&
+Query OK, 0 rows affected (0.14 sec)
 
+mysql> delimiter ;
+mysql> insert into products(name, description, qty, price, discounted_price, img_urls) values('trial', 'xyz', -1, -100, -19, '');
+ERROR 1644 (45000): Price of product cannot be less than 1rs
 
-4)  
+4) Create trigger to check if seller email is inserted or not if blank replace it with brand_name
+mysql> delimiter &&
+mysql> create trigger checkSeller
+    -> before insert
+    -> on sellers
+    -> for each row
+    -> begin 
+    -> if (new.email='') then
+    -> set new.email = new.brand_name;
+    -> end if;
+    -> end &&
+Query OK, 0 rows affected (0.14 sec)
+mysql> delimiter ;
+mysql> insert into sellers(email, brand_name, gst_no, phone_no) values('', 'adidas', '1233', '80802');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from sellers where id = 3;
++----+--------+------------+--------+----------+
+| id | email  | brand_name | gst_no | phone_no |
++----+--------+------------+--------+----------+
+|  3 | adidas | adidas     | 1233   | 80802    |
++----+--------+------------+--------+----------+
+1 row in set (0.00 sec)
+
