@@ -1,0 +1,204 @@
+) write a stored procedure to add two numbers
+mysql> delimiter &&
+mysql> create procedure addTwoNumbers ( IN a INT, IN b INT, OUT sum INT )
+    -> begin
+    -> set sum = a + b;
+    -> end &&
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> delimiter ;
+mysql> call addTwoNumbers(5, 10, @sum);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @sum;
++------+
+| @sum |
++------+
+|   15 |
++------+
+1 row in set (0.00 sec)
+
+
+2) write a stored procedure which will add discount to the customers according to the order amount
+  a) add discount of 10% to all the customers who's order amount is more than 10000
+     	mysql> delimiter &&
+	mysql> create procedure apply10Discount()
+	    -> begin
+	    -> update orders set amount=amount*.9 where amount>10000;
+	    -> end &&
+	Query OK, 0 rows affected (0.11 sec)
+
+	mysql> delimiter ;
+	mysql> select * from orders where amount > 10000;
+	+----+------+------+---------------------+--------+
+	| id | c_id | p_id | date                | amount |
+	+----+------+------+---------------------+--------+
+	| 11 |    1 |    7 | 2023-05-10 12:31:43 |  14000 |
+	| 12 |    2 |    7 | 2023-05-10 12:31:51 |  14000 |
+	+----+------+------+---------------------+--------+
+	2 rows in set (0.00 sec)
+
+	mysql> call apply10Discount();
+	Query OK, 2 rows affected (0.09 sec)
+
+	mysql> select * from orders where amount > 10000;
+	+----+------+------+---------------------+--------+
+	| id | c_id | p_id | date                | amount |
+	+----+------+------+---------------------+--------+
+	| 11 |    1 |    7 | 2023-05-10 12:31:43 |  12600 |
+	| 12 |    2 |    7 | 2023-05-10 12:31:51 |  12600 |
+	+----+------+------+---------------------+--------+
+	2 rows in set (0.00 sec)
+
+  b) add discount of 20% to all the customers who's order amount is more than 25,000
+	mysql> delimiter &&
+	mysql> create procedure apply20Discount()
+	    -> begin
+	    -> update orders set amount=amount*.8 where amount > 25000;
+	    -> end &&
+	Query OK, 0 rows affected (0.11 sec)
+
+	mysql> delimiter ;
+	mysql> select * from orders where amount > 25000;
+	+----+------+------+---------------------+--------+
+	| id | c_id | p_id | date                | amount |
+	+----+------+------+---------------------+--------+
+	| 13 |    1 |    8 | 2023-05-10 12:37:43 |  30000 |
+	+----+------+------+---------------------+--------+
+	1 row in set (0.00 sec)
+
+	mysql> call apply20Discount();
+	Query OK, 1 row affected (0.10 sec)
+
+	mysql> select * from orders where amount > 20000;
+	+----+------+------+---------------------+--------+
+	| id | c_id | p_id | date                | amount |
+	+----+------+------+---------------------+--------+
+	| 13 |    1 |    8 | 2023-05-10 12:37:43 |  24000 |
+	+----+------+------+---------------------+--------+
+	1 row in set (0.00 sec)
+
+ 
+3) write a procedure to count number of customers who order the product without using aggregate function
+ 
+ 
+4) write a procedure to display customer details who stay in pune
+mysql> delimiter &&
+mysql> create procedure puneCustomers()
+    -> begin
+    -> select * from customers where address='pune';
+    -> end &&
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> delimiter ;
+mysql> call puneCustomers();
++----+--------+--------+---------+------------+------+
+| id | fname  | lname  | address | phone_no   | dob  |
++----+--------+--------+---------+------------+------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 |
+|  5 | madhav | jadhav | pune    | 8090809812 |   18 |
++----+--------+--------+---------+------------+------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+ 
+6) write a procedure to get customer details and purchase details for a specific order
+mysql> delimiter &&
+mysql> create procedure getOrderByID ( IN id INT)
+    -> begin
+    -> select orders.id as order_id, fname, lname, phone_no, products.name, products.discounted_price from orders inner join products on orders.p_id=products.id inner join customers on orders.c_id=customers.id where orders.id=id;
+    -> end &&
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> delimiter ;
+mysql> call getOrderByID(13);
++----------+--------+--------+------------+-------------------+------------------+
+| order_id | fname  | lname  | phone_no   | name              | discounted_price |
++----------+--------+--------+------------+-------------------+------------------+
+|       13 | somesh | somani | 8080259833 | nike travis scott |            30000 |
++----------+--------+--------+------------+-------------------+------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+7) write a procedure to accept customer number from the user and display his purchase amount of the user
+mysql> delimiter &&
+mysql> create procedure getOrderByCustomerNo ( IN p_no VARCHAR(10) )
+    -> begin
+    -> select fname, address, sum(amount) from customers inner join orders on customers.id=orders.c_id where phone_no=p_no group by fname, address;
+    -> end &&
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> delimiter ;
+mysql> call getOrderByCustomerNo(8080259833);
++--------+---------+-------------+
+| fname  | address | sum(amount) |
++--------+---------+-------------+
+| somesh | pune    |       36600 |
++--------+---------+-------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+8) write a procedure to find purchase details of all the customers who made shopping today
+mysql> delimiter &&
+mysql> create procedure getTodaysOrder()
+    -> begin
+    -> select products.name, products.discounted_price, fname, lname, date, phone_no, date  from customers inner join orders on orders.c_id=customers.id inner join products on orders.p_id=products.id where cast(orders.date as date)=curdate();
+    -> end &&
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> delimiter ;
+mysql> call getTodaysOrder();
++-------------------+------------------+-----------+-----------+---------------------+------------+---------------------+
+| name              | discounted_price | fname     | lname     | date                | phone_no   | date                |
++-------------------+------------------+-----------+-----------+---------------------+------------+---------------------+
+| nike air snekars  |            14000 | somesh    | somani    | 2023-05-10 12:31:43 | 8080259833 | 2023-05-10 12:31:43 |
+| nike air snekars  |            14000 | priyanshu | mahukhaye | 2023-05-10 12:31:51 | 7787878112 | 2023-05-10 12:31:51 |
+| nike travis scott |            30000 | somesh    | somani    | 2023-05-10 12:37:43 | 8080259833 | 2023-05-10 12:37:43 |
++-------------------+------------------+-----------+-----------+---------------------+------------+---------------------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+9) write a procedure to accept a number from the user and to display whether it is even or odd
+mysql> delimiter &&
+mysql> create procedure evenOrOdd ( IN val INT, OUT msg VARCHAR(10) )
+    -> begin
+    -> IF (mod(val, 2) = 0) then
+    ->    set msg = 'EVEN';
+    -> else
+    ->    set msg = 'ODD';
+    -> end if;
+    -> end &&
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> delimiter ;
+mysql> call evenOrOdd(10, @msg);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @msg;
++------+
+| @msg |
++------+
+| EVEN |
++------+
+1 row in set (0.00 sec)
+
+mysql> call evenOrOdd(7, @msg);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @msg;
++------+
+| @msg |
++------+
+| ODD  |
++------+
+1 row in set (0.00 sec)
+
+
