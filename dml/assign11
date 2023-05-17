@@ -1,0 +1,55 @@
+1) Create cursor to backup customers data from customers table
+mysql> DELIMITER &&
+mysql> CREATE PROCEDURE backup_customers_data()
+    ->    BEGIN
+    ->       DECLARE done INT DEFAULT 0;
+    ->       DECLARE id,dob INTEGER;
+    ->       DECLARE fname, lname, address VARCHAR(50);
+    ->       DECLARE phone_no VARCHAR(10);
+    ->       DECLARE cur CURSOR FOR SELECT * FROM customers;
+    ->       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    ->       OPEN cur;
+    ->       label: LOOP
+    ->       FETCH cur INTO id, fname, lname, address, phone_no, dob;
+    ->       INSERT INTO backupCustomers VALUES(id, fname, lname, address, phone_no, dob);
+    ->       IF done = 1 THEN LEAVE label;
+    ->       END IF;
+    ->       END LOOP;
+    ->       CLOSE cur;
+    ->    END &&
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> DELIMITER ;
+mysql> call backup_customers_data();
+Query OK, 1 row affected (1.12 sec)
+
+mysql> select * from backupCustomers;
++------+------------+-----------+---------+------------+------+
+| id   | fname      | lname     | address | phone_no   | dob  |
++------+------------+-----------+---------+------------+------+
+|    1 | somesh     | somani    | pune    | 8080259833 |   18 |
+|    2 | priyanshu  | mahukhaye | nagpur  | 7787878112 |   18 |
+|    3 | om         | nikam     | nasik   | 8080809812 |   18 |
+|    4 | shitanshu  | b         | bandara | 7787878112 |   18 |
+|    5 | madhav     | jadhav    | pune    | 8090809812 |   18 |
+|    6 | sudharshan | patil     | sangli  | 7787412367 |   18 |
+|    9 | ayush      | dhoot     | sangli  | 8080981234 |   19 |
+|    9 | ayush      | dhoot     | sangli  | 8080981234 |   19 |
++------+------------+-----------+---------+------------+------+
+8 rows in set (0.00 sec)
+
+
+2) Adding a new column to customers and creating customer to update that column in table
+mysql> alter table customers add column full_name varchar(100);
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers where id = 1;
++----+--------+--------+---------+------------+------+-----------+
+| id | fname  | lname  | address | phone_no   | dob  | full_name |
++----+--------+--------+---------+------------+------+-----------+
+|  1 | somesh | somani | pune    | 8080259833 |   18 | NULL      |
++----+--------+--------+---------+------------+------+-----------+
+1 row in set (0.00 sec)
+
+
