@@ -92,3 +92,23 @@ mysql> select * from sellers where id = 3;
 |  3 | adidas | adidas     | 1233   | 80802    |
 +----+--------+------------+--------+----------+
 1 row in set (0.00 sec)
+
+5) Create trigger to check if customer phone number is greater than 10 or less than 10 and display error msg then
+mysql> delimiter &&
+mysql> create trigger checkPhoneNumber
+    -> before insert
+    -> on customers
+    -> for each row
+    -> begin
+    -> declare ph_length INT;
+    -> set ph_length = (select length(new.phone_no));
+    -> if (ph_length <> 10) then
+    -> signal sqlstate '45000' set message_text = 'Phone number should be 10 digit long only';
+    -> end if;
+    -> end &&
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> delimiter ;
+mysql> insert into customers(fname, lname, address, phone_no, dob) values('sam', 'v', 'pune', '8080', 19);
+ERROR 1644 (45000): Phone number should be 10 digit long only
+
