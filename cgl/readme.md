@@ -24,6 +24,6 @@
 
 12) Circle 1 - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem12.cpp"> link </a>
 
-13) Circle 1 - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem13.cpp"> link </a>
+13) Circle 2 - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem13.cpp"> link </a>
 
-14) Circle 1 - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem14.cpp"> link </a>
+14) Circle 3 - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem14.cpp"> link </a>
