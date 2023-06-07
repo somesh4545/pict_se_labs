@@ -2,7 +2,7 @@
 
 1) Write a Program in OpenGL on Linux Platform to draw following pattern by a Line using DDA Line Drawing Algorithm. (Use Mouse / Without Mouse to Plot the Points.) ( A Monitor Screen with a Hill On Display ) - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem1.cpp"> link </a>
 
-2) Write a program in OpenGL on Linux Platform to for drawing a polygon and perform following 2D Transformations on it. 1) Translation, 2) Scaling, 3) Rotation. - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem2.cpp"> link </a>
+2) Write a program in OpenGL on Linux Platform to for drawing a polygon and perform following 2D Transformations on it. 1) Translation, 2) Scaling, 3) Rotation. 4) Shearing - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem2.cpp"> link </a>
 
 3) Write a Program in OpenGL on Linux Platform to draw a Dash-Dot-Dash Line & Dash Line using DDA Line Drawing Algorithm.  - <a href="https://github.com/somesh4545/pict_se_labs/blob/master/cgl/practicals/problem3.cpp"> link </a>
 
