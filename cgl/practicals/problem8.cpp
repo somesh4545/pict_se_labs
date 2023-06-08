@@ -118,11 +118,11 @@ void rotation(){
     double rM[3][3] = {0};
     rM[0][0] = cos(angle);
     rM[0][1] = -sin(angle);
-    rM[0][0] = cos(angle);
+    rM[1][0] = cos(angle);
     rM[1][1] = sin(angle);
     rM[2][0] = rx - (rx*cos(angle))+(ry*sin(angle));
     rM[2][1] = ry - (rx*sin(angle))-(ry*cos(angle));
-    rM[1][1] = 1;
+    rM[2][2] = 1;
 
     for(int i=0; i<20; i++){
         for(int j=0; j<3; j++){
